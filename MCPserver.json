@@ -1,0 +1,326 @@
+{
+  "name": "MCPserver",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware?search={{$json.asset_tag}}&limit=50\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        736,
+        528
+      ],
+      "id": "6e1c4f29-88af-4efe-9e46-1e4649419d9e",
+      "name": "get_assets"
+    },
+    {
+      "parameters": {
+        "url": "=https://staging-ims.folio3.site/api/v1/users?search={{$json.name}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        864,
+        528
+      ],
+      "id": "12320b9b-31ba-4907-8d00-b5eb9358dbe8",
+      "name": "get_users"
+    },
+    {
+      "parameters": {
+        "url": "=https://staging-ims.folio3.site/api/v1/users/{{ $json.user_id }}/assets\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1024,
+        528
+      ],
+      "id": "1bc671aa-c23a-46fb-a77a-2ce259297b8c",
+      "name": "get_user_assets"
+    },
+    {
+      "parameters": {
+        "url": "=https://staging-ims.folio3.site/api/v1/locations?search={{$json.name}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        608,
+        528
+      ],
+      "id": "f0096bbb-8bb4-4699-b30a-702fe31fe9ed",
+      "name": "get_locations"
+    },
+    {
+      "parameters": {
+        "path": "1e8dfb41-8d7d-454f-9ba8-88c28abe4f65"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        720,
+        240
+      ],
+      "id": "a1edde05-08fe-40c4-b89c-c2d121b6da2b",
+      "name": "hardware_read_mcp_server",
+      "webhookId": "1e8dfb41-8d7d-454f-9ba8-88c28abe4f65"
+    },
+    {
+      "parameters": {
+        "path": "1e8dfb41-8d7d-454f-9ba8-88c28abe4f656781"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        224,
+        240
+      ],
+      "id": "2880edcb-0437-443a-8548-3ef5d922e0fd",
+      "name": "hardware_checkout_mcp_server",
+      "webhookId": "1e8dfb41-8d7d-454f-9ba8-88c28abe4f65",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "zmbQXMXlhgPAiM4m",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/zmbQXMXlhgPAiM4m",
+          "cachedResultName": "assets_checkin_WF"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('user_id', ``, 'number') }}",
+            "status_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('status_id', ``, 'number') }}",
+            "checkout_date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('checkout_date', ``, 'string') }}",
+            "note": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('note', ``, 'string') }}",
+            "asset_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('asset_id', ``, 'number') }}",
+            "location_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('location_id', ``, 'number') }}",
+            "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "asset_id",
+              "displayName": "asset_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "status_id",
+              "displayName": "status_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "checkout_date",
+              "displayName": "checkout_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "note",
+              "displayName": "note",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "location_id",
+              "displayName": "location_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        512
+      ],
+      "id": "9b85361f-b791-4e3e-9cdf-57dc5c30b2a2",
+      "name": "Execute Workflow Tool"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "get_assets": {
+      "ai_tool": [
+        [
+          {
+            "node": "hardware_read_mcp_server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_users": {
+      "ai_tool": [
+        [
+          {
+            "node": "hardware_read_mcp_server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_user_assets": {
+      "ai_tool": [
+        [
+          {
+            "node": "hardware_read_mcp_server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_locations": {
+      "ai_tool": [
+        [
+          {
+            "node": "hardware_read_mcp_server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "hardware_checkout_mcp_server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "66c00980-eb2e-400d-b44e-264c6e6ae983",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d2a698ccef7a51e07c7753f030c9a7629e9d3fff9fc2cba50eecb2a3026e6bb6"
+  },
+  "id": "rbDGHiiIQKzz_hUsudBJR",
+  "tags": []
+}

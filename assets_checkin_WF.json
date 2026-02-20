@@ -1,0 +1,460 @@
+{
+  "name": "assets_checkin_WF",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "asset_id",
+              "type": "number"
+            },
+            {
+              "name": "user_id",
+              "type": "number"
+            },
+            {
+              "name": "status_id",
+              "type": "number"
+            },
+            {
+              "name": "checkout_date"
+            },
+            {
+              "name": "note"
+            },
+            {
+              "name": "location_id",
+              "type": "number"
+            },
+            {
+              "name": "action"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2032,
+        720
+      ],
+      "id": "fce79af2-5209-44cf-9be2-60d7c8e87adc",
+      "name": "When Executed by Another Workflow",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "checkout",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ed294328-8c17-4a1f-9f87-ef03d73eaf47"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkout"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "checkin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "63d635f7-c815-439c-84d0-79f3a7bd0ca9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkin"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1040,
+        272
+      ],
+      "id": "5c26b5be-9357-485d-a799-a4bf87595bb6",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://stagingtestims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkin",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWJlMzBjMDY5ZDk1ZDU3ZDc2ZThiYjA5YzFiMWNkMWRiNzQ5NzUyZDAyOGRkY2I1MWQzM2NlZTcwOWU2ZDQ2NzVkNWU1ZGE1MmE3Y2I0NjIiLCJpYXQiOjE3NjQ4MzI0MzEuMTY4Mzg0LCJuYmYiOjE3NjQ4MzI0MzEuMTY4Mzg5LCJleHAiOjIyMzgyMTgwMzEuMTU0NzQsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.hx_l8PYu3lmXvH4Bkb68SaBOq_lgpPLXzT8DN9N7WcTyJ2ykurf-qzjeDVUYTimKiRy0vd7jjOytRI9TttwuL-8om6mCg1zgFxeMeyPu8BvgHNUiA5P6SVkGkWpIjTm5LoZZwupCi4VBVWS5tYtQyAmclPR8kJgKwseyEMr3fxAjsOa6285FY_Hf7lbFOUvAYMNwxT51512FiqODXpDK80Pu648cJweaOVW3N0A1B_OYjadzTEexP8ocJ3N_EsUiOnHt6_mVI696Z6RsLjjGarGdMtRw-naoet-nCkUNLiehl8dzlmxInLmuK7RLuDs82KVbhzJOeYA4CQevoqeV_KFgD8pAOvVqkjb9i73oZ2dh58yz0XCkXVltoOwEP978UGlyfuOMPerwKgHdvjKQh999_ejip3QpqXqKHkoixlGhyl1iG5gdQQq4hL6Li7YUm5Fdw1LrT0l07ckmFIeRAO2TMSEgk5e8JjI_ArZYkz4MLRTeUeJd8AXXyYVvGRl2vybGTJLYUVimRLHnD0H1Q46ujGcfUhnccTgrITZ8-qp_nZjnVxXIJvYGdKs_QRfbAeIqXpWKwFOHgWcttHFm5OP-VKrsIpEaHLVCE09y0UHERRA0k2I8e9JnqPhOgIIxiUccqBAxOM38N8VDdOgI_vJ0LZhfKal-JOLp7eqz0u4"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status_id\": {{ $json.status_id }},\n  \"location_id\": {{ $json.location_id }},\n  \"checkin_date\": \"{{ $json.checkout_date }}\",\n  \"note\": \"{{ $json.note }}\"\n}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -896,
+        384
+      ],
+      "id": "00c15ce4-7b73-4609-a3ba-5f1616a2c9e6",
+      "name": "HTTP Request2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://stagingtestims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkout",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWJlMzBjMDY5ZDk1ZDU3ZDc2ZThiYjA5YzFiMWNkMWRiNzQ5NzUyZDAyOGRkY2I1MWQzM2NlZTcwOWU2ZDQ2NzVkNWU1ZGE1MmE3Y2I0NjIiLCJpYXQiOjE3NjQ4MzI0MzEuMTY4Mzg0LCJuYmYiOjE3NjQ4MzI0MzEuMTY4Mzg5LCJleHAiOjIyMzgyMTgwMzEuMTU0NzQsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.hx_l8PYu3lmXvH4Bkb68SaBOq_lgpPLXzT8DN9N7WcTyJ2ykurf-qzjeDVUYTimKiRy0vd7jjOytRI9TttwuL-8om6mCg1zgFxeMeyPu8BvgHNUiA5P6SVkGkWpIjTm5LoZZwupCi4VBVWS5tYtQyAmclPR8kJgKwseyEMr3fxAjsOa6285FY_Hf7lbFOUvAYMNwxT51512FiqODXpDK80Pu648cJweaOVW3N0A1B_OYjadzTEexP8ocJ3N_EsUiOnHt6_mVI696Z6RsLjjGarGdMtRw-naoet-nCkUNLiehl8dzlmxInLmuK7RLuDs82KVbhzJOeYA4CQevoqeV_KFgD8pAOvVqkjb9i73oZ2dh58yz0XCkXVltoOwEP978UGlyfuOMPerwKgHdvjKQh999_ejip3QpqXqKHkoixlGhyl1iG5gdQQq4hL6Li7YUm5Fdw1LrT0l07ckmFIeRAO2TMSEgk5e8JjI_ArZYkz4MLRTeUeJd8AXXyYVvGRl2vybGTJLYUVimRLHnD0H1Q46ujGcfUhnccTgrITZ8-qp_nZjnVxXIJvYGdKs_QRfbAeIqXpWKwFOHgWcttHFm5OP-VKrsIpEaHLVCE09y0UHERRA0k2I8e9JnqPhOgIIxiUccqBAxOM38N8VDdOgI_vJ0LZhfKal-JOLp7eqz0u4"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assigned_user\": {{ $json.user_id }},\n  \"checkout_to_type\": \"user\",\n  \"status_id\": {{ $json.status_id }},\n  \"checkout_at\": \"{{ $json.checkout_date }}\",\n  \"note\": \"{{ $json.note }}\"\n}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -912,
+        192
+      ],
+      "id": "73a8d92c-e7ac-444a-b0d0-c421af96ad07",
+      "name": "HTTP Request",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware/{{ $json.asset_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status_id\": {{ $json.status_id }}\n}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        912
+      ],
+      "id": "761f2091-4613-4ba9-9138-9ec0e7d02bba",
+      "name": "HTTP Request3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "checkout",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ed294328-8c17-4a1f-9f87-ef03d73eaf47"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkout"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "checkin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "63d635f7-c815-439c-84d0-79f3a7bd0ca9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkin"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "update_status",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "update-status-condition-123"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "update_status"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1728,
+        704
+      ],
+      "id": "bb237eaa-8030-4fc5-b3e6-12bf677e3221",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkout",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assigned_user\": {{ $json.user_id }},\n  \"checkout_to_type\": \"user\",\n  \"status_id\": {{ $json.status_id }},\n  \"checkout_at\": \"{{ $json.checkout_date }}\",\n  \"note\": \"{{ $json.note }}\"\n}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1264,
+        512
+      ],
+      "id": "6592dfcf-d101-4cfd-aa02-cf32caaaa449",
+      "name": "HTTP Request1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkin",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status_id\": {{ $json.status_id }},\n  \"location_id\": {{ $json.location_id }},\n  \"checkin_date\": \"{{ $json.checkout_date }}\",\n  \"note\": \"{{ $json.note }}\"\n}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1264,
+        704
+      ],
+      "id": "c9088705-fe88-4f55-a955-ad8ecff0e4ff",
+      "name": "HTTP Request4",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "36a49cf6-e1c7-4a6e-b53b-2d7c58292a67",
+  "meta": {
+    "instanceId": "d2a698ccef7a51e07c7753f030c9a7629e9d3fff9fc2cba50eecb2a3026e6bb6"
+  },
+  "id": "_Lm6_vZR5PcgumHu1E9lB",
+  "tags": []
+}

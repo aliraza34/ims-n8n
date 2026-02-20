@@ -1,0 +1,242 @@
+{
+  "name": "MCP client",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "You are an IT asset assistant for Snipe-IT inventory management.\n\nTOOLS:\n- get_assets(asset_tag) - Search assets by keyword (ALWAYS provide a search keyword)\n- get_users(name) - Search users\n- get_locations(name?) - Get locations\n- Execute_Workflow_Tool - Checkout/checkin/update\n\nWORKFLOWS:\n\n1. CHECKOUT:\n   - get_assets → extract asset_id\n   - get_users → extract user_id\n   - Execute_Workflow_Tool: {asset_id, user_id, status_id: 2, location_id: 0, checkout_date: \"YYYY-MM-DD\", note: \"...\", action: \"checkout\"}\n\n2. CHECKIN:\n   - get_assets → extract asset_id\n   - Ask user for status & location\n   - get_locations → resolve location_id\n   - Execute_Workflow_Tool: {asset_id, user_id: 0, status_id: 2, location_id, checkout_date: \"YYYY-MM-DD\", note: \"...\", action: \"checkin\"}\n\n3. UPDATE STATUS:\n   - get_assets → extract asset_id\n   - Execute_Workflow_Tool: {asset_id, user_id: 0, status_id: 2, location_id: 0, checkout_date: \"YYYY-MM-DD\", note: \"...\", action: \"update_status\"}\n\n4. USER LOOKUP:\n   - For queries like 'who is X', 'find user X', or any user info request\n   - Call get_users(name) with the person's name or email as the search term\n   - Present user details clearly (name, email, department, assigned assets if needed)\n\n5. ANALYTICS/COUNTING:\n   - NEVER call get_assets() without a keyword - always pass a relevant search term\n   - Extract the most relevant keyword from the query (model name, category, etc.)\n   - Filter results locally using case-insensitive partial matching on status, location, category, model\n   - Example: \"new headphones in Lahore\" → call get_assets(\"headphones\"), then filter by location \"Lahore\"\n   - Count matches and present in requested format\n   - If result is 0, try a broader or different keyword\n\nCRITICAL RULES:\n- Always use numeric IDs in Execute_Workflow_Tool, never tags/names\n- All 7 parameters required: asset_id, user_id, status_id, location_id, checkout_date, note, action\n- Use 0 for unused parameters\n- Today's date in YYYY-MM-DD format\n- For analytics: partial match, case-insensitive\n- Never call get_assets() without a keyword - this prevents context window overflow"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        576,
+        48
+      ],
+      "id": "8b087711-464a-4577-b3df-a91f2684530d",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        352
+      ],
+      "id": "057c453e-c08f-4cc5-a793-bd32d4e14a59",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "GuOYgUgsZUCYpZZq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://10.164.0.186:5678/mcp/1e8dfb41-8d7d-454f-9ba8-88c28abe4f65",
+        "serverTransport": "sse",
+        "include": "selected",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        352
+      ],
+      "id": "c500311f-db31-4430-bcac-b67d965611dc",
+      "name": "hardware_read_mcp_client"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://10.164.0.186:5678/mcp/1e8dfb41-8d7d-454f-9ba8-88c28abe4f656781",
+        "serverTransport": "sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        352
+      ],
+      "id": "ecf9f0cf-4c5e-4974-8501-4e720c6c5306",
+      "name": "hardware_checkout_mcp_client",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "GET",
+          "POST",
+          "PATCH",
+          "HEAD",
+          "PUT"
+        ],
+        "path": "5e7a6ff0-191c-4258-ac1d-d5f16f68dc3d",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        16
+      ],
+      "id": "ac6b5a1d-dd4f-42e3-996a-fcd9233029f0",
+      "name": "Webhook",
+      "webhookId": "5e7a6ff0-191c-4258-ac1d-d5f16f68dc3d"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"message\": $('AI Agent').item.json.output, \"data\": {} } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1040,
+        48
+      ],
+      "id": "49404d5c-c86f-4cff-944e-ef8ff42c5605",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": false, \"message\": \"Sorry, I could not process your request. Please try again.\", \"data\": {} } }}",
+        "options": {
+          "responseCode": 500
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1040,
+        220
+      ],
+      "id": "err-respond-webhook-001",
+      "name": "Respond to Webhook Error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hardware_read_mcp_client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hardware_checkout_mcp_client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "f2cbc87c-035b-4c05-aa3e-bf67c3b603ae",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d2a698ccef7a51e07c7753f030c9a7629e9d3fff9fc2cba50eecb2a3026e6bb6"
+  },
+  "id": "E58AnxXt8YyHJq50UJ35-",
+  "tags": []
+}
