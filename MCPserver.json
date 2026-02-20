@@ -32,7 +32,7 @@
     },
     {
       "parameters": {
-        "url": "=https://staging-ims.folio3.site/api/v1/users?search={{$json.name}}",
+        "url": "=https://staging-ims.folio3.site/api/v1/users?search={{$json.name}}&limit=10",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -90,7 +90,7 @@
     },
     {
       "parameters": {
-        "url": "=https://staging-ims.folio3.site/api/v1/locations?search={{$json.name}}",
+        "url": "=https://staging-ims.folio3.site/api/v1/locations?search={{$json.name}}&limit=10",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
