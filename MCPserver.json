@@ -3,12 +3,26 @@
   "nodes": [
     {
       "parameters": {
-        "name": "get_assets",
-        "description": "Search Snipe-IT hardware assets by keyword. Pass the search keyword as query string. Always provide a keyword. Returns id, name, asset_tag, status, location, assigned_to.",
-        "jsCode": "const BEARER = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI';\nconst search = encodeURIComponent(String(query || ''));\ntry {\n  const resp = await $http.request({\n    method: 'GET',\n    url: 'https://staging-ims.folio3.site/api/v1/hardware?search=' + search + '&limit=50',\n    headers: { 'Authorization': 'Bearer ' + BEARER, 'Accept': 'application/json' },\n    skipSslCertificateValidation: true\n  });\n  const rows = (resp.rows || []).map(function(a) {\n    return {\n      id: a.id,\n      name: a.name,\n      asset_tag: a.asset_tag,\n      status: a.status_label ? a.status_label.name : null,\n      location: a.location ? a.location.name : null,\n      assigned_to: a.assigned_to ? a.assigned_to.name : null\n    };\n  });\n  return JSON.stringify({ total: resp.total, rows: rows });\n} catch(e) {\n  return JSON.stringify({ error: String(e.message), total: 0, rows: [] });\n}"
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware?search={{$json.asset_tag}}&limit=50",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolCode",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
       "position": [
         736,
         528
@@ -18,12 +32,26 @@
     },
     {
       "parameters": {
-        "name": "get_users",
-        "description": "Search Snipe-IT users by name or username. Pass the search term as query string. Returns id, name, username, email, department.",
-        "jsCode": "const BEARER = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI';\nconst search = encodeURIComponent(String(query || ''));\ntry {\n  const resp = await $http.request({\n    method: 'GET',\n    url: 'https://staging-ims.folio3.site/api/v1/users?search=' + search + '&limit=10',\n    headers: { 'Authorization': 'Bearer ' + BEARER, 'Accept': 'application/json' },\n    skipSslCertificateValidation: true\n  });\n  const rows = (resp.rows || []).map(function(u) {\n    return {\n      id: u.id,\n      name: u.name,\n      username: u.username,\n      email: u.email,\n      department: u.department ? u.department.name : null\n    };\n  });\n  return JSON.stringify({ total: resp.total, rows: rows });\n} catch(e) {\n  return JSON.stringify({ error: String(e.message), total: 0, rows: [] });\n}"
+        "url": "=https://staging-ims.folio3.site/api/v1/users?search={{$json.name}}&limit=10",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolCode",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
       "position": [
         864,
         528
@@ -33,12 +61,26 @@
     },
     {
       "parameters": {
-        "name": "get_user_assets",
-        "description": "Get all assets assigned to a specific user by their numeric user ID. Pass the numeric user ID as query.",
-        "jsCode": "const BEARER = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI';\nconst userId = parseInt(String(query || '0'), 10) || 0;\ntry {\n  const resp = await $http.request({\n    method: 'GET',\n    url: 'https://staging-ims.folio3.site/api/v1/users/' + userId + '/assets',\n    headers: { 'Authorization': 'Bearer ' + BEARER, 'Accept': 'application/json' },\n    skipSslCertificateValidation: true\n  });\n  const rows = (resp.rows || []).map(function(a) {\n    return {\n      id: a.id,\n      name: a.name,\n      asset_tag: a.asset_tag,\n      status: a.status_label ? a.status_label.name : null,\n      location: a.location ? a.location.name : null\n    };\n  });\n  return JSON.stringify({ total: resp.total, rows: rows });\n} catch(e) {\n  return JSON.stringify({ error: String(e.message), total: 0, rows: [] });\n}"
+        "url": "=https://staging-ims.folio3.site/api/v1/users/{{ $json.user_id }}/assets",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolCode",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
       "position": [
         1024,
         528
@@ -48,12 +90,26 @@
     },
     {
       "parameters": {
-        "name": "get_locations",
-        "description": "Search Snipe-IT locations by name. Pass the location name as query string. Returns id and name only.",
-        "jsCode": "const BEARER = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI';\nconst search = encodeURIComponent(String(query || ''));\ntry {\n  const resp = await $http.request({\n    method: 'GET',\n    url: 'https://staging-ims.folio3.site/api/v1/locations?search=' + search + '&limit=10',\n    headers: { 'Authorization': 'Bearer ' + BEARER, 'Accept': 'application/json' },\n    skipSslCertificateValidation: true\n  });\n  const rows = (resp.rows || []).map(function(l) {\n    return { id: l.id, name: l.name };\n  });\n  return JSON.stringify({ total: resp.total, rows: rows });\n} catch(e) {\n  return JSON.stringify({ error: String(e.message), total: 0, rows: [] });\n}"
+        "url": "=https://staging-ims.folio3.site/api/v1/locations?search={{$json.name}}&limit=10",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWUxODY5ZTBjZjliN2EyMDc5NDgzMGQ3ZjdiZDBhYWU2NDI4ZWE2MDBlOTJkZGY4YmE3OWEyMjQ5N2QzMGVkNWE1ZmMxYmQ2NDdiYTQ3MzQiLCJpYXQiOjE3Njg4MDY2MjQuNDkxNzg0LCJuYmYiOjE3Njg4MDY2MjQuNDkxNzg5LCJleHAiOjIyNDIxOTIyMjQuNDA5NTMxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WCk19WwF8-M1SYmjtmObW-HPNJ_BPTRZebTsYhL2jK2l4KqOZSuvnXmVSRQ8RFgsF6FVL5Bo-856nwlGpK3GL0tvks0mwXww3sH2ewuWfAhZaDsjj-kMPnPUZO7XYYKo_tLg5CsHtQVZZc9M7avz7-Ny6P-bEJqCJaFapN3yEfZXPhwOTdNgZLuBMUvgRvMmy0U1eO6N8IMJnCRmsmgnq52LXvcTldvt4P6eM4tdk4Tpu9iZtwMViTCL8u9k1vp1U6vVDaKA2l98zYCVDHVWZnWSlsnNdnasHibIJZXGIn8kg68ZdlcYqTHb94dNo2fOGpHy5_F-iFG5J4LyKFrC16_oWWfmWxBHcvIjYeZ7yyz4W_GxqSwIlPOGi_mSQIgU5XRgh1comLOZQ3zRgIY8iShRZPnjRzOlah1-nZ9_n19o6wbXwBr20HH-Xl0by4qQTy2F2vcwjw0onbj1T3wpRCP4l810LfdilB8g23nvZ4-9SsfFNCS808w5scePrtrL48WDznVTuFzENFVXtD2n0M0F2MrbBCWG0DZPpip2pXkSnFibQKPNEG42jE9WbJyQSdYIVltdPJ82kIkWPLRA7XUIW5aVGfO4WotBR0UQdmBh0tMY-F9SWK0SLB7mv5SJjJk-dBj8Wn3AytbZbYlbp020FPNSybCirkndlmgElfI"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolCode",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
       "position": [
         608,
         528

@@ -30,7 +30,7 @@
         },
         "builtInTools": {},
         "options": {
-          "maxTokens": 800
+          "maxTokens": 1500
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
