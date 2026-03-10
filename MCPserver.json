@@ -119,7 +119,7 @@
     },
     {
       "parameters": {
-        "url": "=https://staging-ims.folio3.site/api/v1/hardware/bytag/{{ $json.asset_tag.replace('#', '%23') }}",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware?search={{$json.asset_tag}}&limit=5",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
