@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "url": "=https://staging-ims.folio3.site/api/v1/hardware?search={{$json.asset_tag}}&limit=50",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware?search={{$json.keyword}}&limit=50",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
