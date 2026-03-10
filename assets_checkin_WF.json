@@ -112,7 +112,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://stagingtestims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkin",
+        "url": "=https://staging-ims.folio3.site/api/v1/hardware/{{ $json.asset_id }}/checkin",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
